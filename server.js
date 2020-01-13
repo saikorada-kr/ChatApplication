@@ -14,7 +14,7 @@ mongo.connect('mongodb://127.0.0.1/mongochat',{ useUnifiedTopology: true },funct
 
     //connect to socket.io
 
-    client.on('connection',function(){
+    client.on('connection',function(socket){
         let chat = db.connection('chats');
         //create function to send status
 
