@@ -2,6 +2,16 @@ const mongo = require('mongodb').MongoClient;
 
 const client = require('socket.io').listen(4000).sockets;
 
+
+var MongoClient = require('mongodb').MongoClient;
+
+// var uri = "mongodb://mongochat123:mongochat123@mongochat-shard-00-00-ttszt.mongodb.net:27017,mongochat-shard-00-01-ttszt.mongodb.net:27017,mongochat-shard-00-02-ttszt.mongodb.net:27017/test?ssl=true&replicaSet=mongochat-shard-0&authSource=admin&retryWrites=true&w=majority";
+// MongoClient.connect(uri, function(err, client) {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
+
 //connect to mongo
 
 mongo.connect('mongodb://127.0.0.1/mongochat',{ useUnifiedTopology: true },function (err,db){
@@ -10,12 +20,12 @@ mongo.connect('mongodb://127.0.0.1/mongochat',{ useUnifiedTopology: true },funct
     }
 
     
-    console.log('mongodb connected')
+    console.log('mongodb connected...')
 
     //connect to socket.io
 
     client.on('connection',function(socket){
-        let chat = db.connection('chats');
+        let chat = db.collection('chats');
         //create function to send status
 
         sendStatus = function(s){
@@ -59,8 +69,8 @@ mongo.connect('mongodb://127.0.0.1/mongochat',{ useUnifiedTopology: true },funct
            //remove all chats from collection
            chat.remove({},function(){
                socket.emit('cleared');
-           })
-       })
+           });
+       });
 
     });
 });
